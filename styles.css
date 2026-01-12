@@ -1,0 +1,518 @@
+/**
+ * DOCWIPING - Advanced Data Sanitization System
+ * Neon Blue & White ARC Reactor Theme
+ */
+
+:root {
+    --neon-blue: #00d4ff;
+    --neon-blue-dark: #0099cc;
+    --neon-blue-light: #33e9ff;
+    --neon-white: #ffffff;
+    --neon-dark: #0a0e27;
+    --neon-darker: #050814;
+    --accent-cyan: #00ffff;
+    --accent-purple: #7c3aed;
+    --gradient-purple: #8b5cf6;
+    --gradient-pink: #ec4899;
+    --gradient-orange: #f97316;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Arial', sans-serif;
+    touch-action: manipulation;
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: var(--neon-white);
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 50% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.app-container {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 95vh;
+    max-height: 800px;
+    background: linear-gradient(135deg, rgba(5, 8, 20, 0.95), rgba(30, 20, 60, 0.95));
+    border: 3px solid;
+    border-image: linear-gradient(135deg, var(--neon-blue) 0%, var(--gradient-purple) 50%, var(--accent-cyan) 100%) 1;
+    box-shadow: 
+        0 0 60px rgba(139, 92, 246, 0.4),
+        0 0 100px rgba(0, 212, 255, 0.2),
+        inset 0 0 60px rgba(124, 58, 237, 0.08);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.app-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(0, 255, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.app-container > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Screen Display */
+.app-screen {
+    display: none;
+    animation: neonFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+}
+
+.app-screen.active {
+    display: flex;
+}
+
+@keyframes neonFadeIn {
+    0% { 
+        opacity: 0; 
+        transform: translateY(20px) scale(0.95);
+        filter: blur(4px);
+    }
+    50% {
+        filter: blur(2px);
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+/* Boot and Log Animations */
+.log-line, .boot-line {
+    animation: neonGlowSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes neonGlowSlideIn {
+    from { 
+        opacity: 0; 
+        transform: translateX(-15px);
+        text-shadow: 0 0 0px rgba(0, 212, 255, 0);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateX(0);
+        text-shadow: 0 0 15px rgba(0, 212, 255, 0.7);
+    }
+}
+
+@keyframes neonPulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 20px rgba(0, 212, 255, 0.5),
+            0 0 40px rgba(0, 255, 255, 0.25),
+            inset 0 0 20px rgba(0, 212, 255, 0.1);
+    }
+    50% {
+        box-shadow: 
+            0 0 40px rgba(0, 212, 255, 0.7),
+            0 0 80px rgba(0, 255, 255, 0.4),
+            inset 0 0 40px rgba(0, 212, 255, 0.15);
+    }
+}
+
+@keyframes neonFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.95; }
+}
+
+/* Header and Navigation */
+header {
+    background: linear-gradient(90deg, rgba(10, 14, 39, 0.9), rgba(5, 8, 20, 0.9));
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.1);
+}
+
+/* Drive Item Styling */
+.drive-item {
+    background: linear-gradient(135deg, rgba(10, 20, 40, 0.8), rgba(8, 15, 35, 0.8));
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.drive-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+    transition: left 0.6s;
+}
+
+.drive-item:hover {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 255, 0.08));
+    border-color: rgba(0, 212, 255, 0.8);
+    box-shadow: 
+        0 0 25px rgba(0, 212, 255, 0.4),
+        inset 0 0 25px rgba(0, 212, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+.drive-item:hover::before {
+    left: 100%;
+}
+
+.drive-item:hover .drive-actions {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Step Indicators */
+.step {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step.active {
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+}
+
+/* Tooltips */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 240px;
+    background: linear-gradient(135deg, rgba(10, 14, 39, 0.98), rgba(8, 15, 35, 0.98));
+    color: var(--neon-white);
+    text-align: center;
+    border-radius: 8px;
+    padding: 12px;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -120px;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.75rem;
+    font-weight: 500;
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.4);
+    border: 1px solid rgba(0, 212, 255, 0.4);
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(-5px);
+}
+
+/* Button Styles */
+.button-press {
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.button-press:active {
+    transform: scale(0.96);
+    filter: brightness(1.1);
+}
+
+.glow-shadow {
+    box-shadow: none;
+    transition: none;
+}
+
+.glow-shadow:hover {
+    box-shadow: none;
+}
+
+.glow-shadow-red {
+    box-shadow: 
+        0 0 10px rgba(255, 0, 50, 0.4),
+        0 0 20px rgba(255, 100, 100, 0.2),
+        0 0 30px rgba(255, 0, 50, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glow-shadow-red:hover {
+    box-shadow: 
+        0 0 20px rgba(255, 0, 50, 0.6),
+        0 0 40px rgba(255, 100, 100, 0.3),
+        0 0 60px rgba(255, 0, 50, 0.15);
+}
+
+/* Progress Bar Enhancements */
+#desktop-progress-bar,
+#android-progress-bar {
+    background: linear-gradient(90deg, #00d4ff, #00ffff, #0099ff);
+    background-size: 200% 100%;
+    animation: neonShimmer 2s infinite;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+}
+
+@keyframes neonShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Text Glow Effects */
+.text-blue-400,
+.text-cyan-400,
+[class*="text-neon"] {
+    text-shadow: none;
+}
+
+.text-blue-400:hover,
+.text-cyan-400:hover {
+    text-shadow: none;
+}
+
+/* Data Meter Styles */
+.data-meter {
+    background: linear-gradient(90deg, rgba(10, 20, 40, 0.8), rgba(8, 15, 35, 0.8));
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px 0;
+    transition: all 0.3s ease;
+}
+
+.data-meter:hover {
+    border-color: rgba(0, 212, 255, 0.7);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+}
+
+.data-meter-bar {
+    background: linear-gradient(90deg, #00d4ff, #00ffff, #0099ff);
+    border-radius: 4px;
+    height: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+}
+
+.data-meter-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0099ff, #00d4ff);
+    transition: width 0.3s ease;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(0, 212, 255, 0.5);
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--neon-blue);
+    text-shadow: 0 0 5px rgba(0, 212, 255, 0.4);
+}
+
+/* Certificate Styles */
+.certificate-container {
+    background: linear-gradient(135deg, rgba(10, 20, 40, 0.95), rgba(8, 15, 35, 0.95));
+    border: 2px solid rgba(0, 212, 255, 0.4);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+}
+
+.certificate-header {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-align: center;
+    color: var(--neon-blue);
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    margin-bottom: 16px;
+    letter-spacing: 0.1em;
+}
+
+/* Modal Styles */
+#confirmation-modal {
+    background: rgba(5, 8, 20, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+#confirmation-modal > div {
+    background: linear-gradient(135deg, rgba(10, 20, 40, 0.95), rgba(8, 15, 35, 0.95));
+    border: 2px solid rgba(0, 212, 255, 0.4);
+    box-shadow: 
+        0 0 40px rgba(0, 212, 255, 0.3),
+        inset 0 0 40px rgba(0, 212, 255, 0.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .app-container {
+        border-radius: 12px;
+    }
+    
+    .drive-item {
+        padding: 16px;
+    }
+}
+
+/* Animation Classes */
+.animate-pulse {
+    animation: neonPulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ==========================================
+   CHATBOT STYLES
+   ========================================== */
+
+#chatbot-widget {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Aura-X Tactical Theme */
+:root {
+    --aura-male-primary: #008cff; /* Tactical Blue */
+    --aura-male-accent: #00ffcc;
+    --aura-male-dark: #0a0c10;
+    --aura-male-border: #1e2530;
+}
+
+#aura-robot-launcher {
+    width: 75px;
+    height: 75px;
+    background: var(--aura-male-dark);
+    border-radius: 12px; /* Angular instead of round */
+    border: 1px solid var(--aura-male-border);
+    box-shadow: 0 0 15px rgba(0, 140, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eye-visor {
+    width: 50px;
+    height: 4px; /* Sharper, thinner eye line */
+    background: var(--aura-male-primary);
+    box-shadow: 0 0 12px var(--aura-male-primary);
+}
+
+#aura-chat-window {
+    border-radius: 4px; /* Square edges for a rugged look */
+    border-left: 4px solid var(--aura-male-primary);
+    background: rgba(10, 12, 16, 0.98);
+    border: 1px solid var(--aura-male-border);
+}
+
+#chatbot-widget #aura-chat-window {
+    animation: slideUp 0.4s ease-out;
+}
+
+#chat-window {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+#chat-messages::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+#chat-messages::-webkit-scrollbar-thumb {
+    background: var(--gradient-purple);
+    border-radius: 3px;
+}
+
+#chat-messages::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-purple);
+}
+
+.chat-message-user {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.chat-message-bot {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+.chat-bubble-user {
+    background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-blue-dark) 100%);
+    border-radius: 12px 12px 0 12px;
+    padding: 10px 14px;
+    max-width: 75%;
+    word-wrap: break-word;
+}
+
+.chat-bubble-bot {
+    background: rgba(124, 58, 237, 0.2);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    border-radius: 12px 12px 12px 0;
+    padding: 10px 14px;
+    max-width: 75%;
+    word-wrap: break-word;
+}
+
+
+.animate-flicker {
+    animation: neonFlicker 0.15s infinite;
+}
+
+/* Text Colors */
+.neon-blue {
+    color: var(--neon-blue);
+}
+
+.neon-cyan {
+    color: var(--accent-cyan);
+}
+
+.neon-white {
+    color: var(--neon-white);
+}
+

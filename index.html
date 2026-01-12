@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0c10">
+    <meta name="description" content="Aura-X Tactical AI Assistant - Advanced Data Sanitization System">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preload" href="{{ url_for('static', filename='aurax-robot.css') }}" as="style">
+    <title>DOCWIPING - Advanced Data Sanitization System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- jsPDF and autoTable plugin for certificate generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='aurax-robot.css') }}">
+</head>
+<body class="flex items-center justify-center h-screen p-4">
+
+    <div id="app-container" class="app-container w-full max-w-lg bg-slate-900 text-white rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+
+        <!-- ===== OS Selection Screen ===== -->
+        <div id="os-selection-screen" class="app-screen active flex-col justify-center items-center h-full p-8 text-center">
+            <div class="p-4 bg-cyan-600/10 rounded-full inline-block animate-pulse" style="animation: neonPulse 3s ease-in-out infinite;">
+                <div class="p-4 bg-cyan-600/20 rounded-full">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-400"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+                </div>
+            </div>
+            <h1 class="text-6xl font-extrabold mt-8 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-600 drop-shadow-lg" style="letter-spacing: 0.1em;">DOCWIPING</h1>
+            <p class="text-cyan-300 mt-3 mb-8 text-lg font-semibold" style="letter-spacing: 0.05em;">Advanced Data Sanitization & Destruction System</p>
+            <p class="text-slate-400 mb-12 italic text-sm">Quantum-Grade Security | Neon Verified | Zero Recovery</p>
+            <div class="grid grid-cols-3 gap-4 w-full max-w-md">
+                <div onclick="selectOS('Windows')" class="bg-gradient-to-br from-slate-800 to-slate-900 p-4 rounded-xl flex flex-col items-center justify-center hover:from-blue-900/30 hover:to-cyan-900/30 cursor-pointer transition-all button-press border border-cyan-500/30 hover:border-cyan-400/70 hover:shadow-lg group" style="box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);">
+                    <svg class="w-12 h-12 text-cyan-400 group-hover:text-cyan-300 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M3,12V6.75L9,5.43V11.91L3,12M21,12V4.5L10.5,3V11.91L21,12M3,13.09V18.25L9,19.57V13.09L3,13.09M21,13.09V20.5L10.5,22V13.09L21,13.09Z" /></svg>
+                    <span class="mt-2 font-bold text-cyan-300 group-hover:text-cyan-200">Windows</span>
+                </div>
+                <div onclick="selectOS('Linux')" class="bg-gradient-to-br from-slate-800 to-slate-900 p-4 rounded-xl flex flex-col items-center justify-center hover:from-blue-900/30 hover:to-cyan-900/30 cursor-pointer transition-all button-press border border-cyan-500/30 hover:border-cyan-400/70 hover:shadow-lg group" style="box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png" alt="Linux Logo" class="w-12 h-12 object-contain group-hover:brightness-150 transition-all">
+                    <span class="mt-2 font-bold text-cyan-300 group-hover:text-cyan-200">Linux</span>
+                </div>
+                <div onclick="selectOS('Android')" class="bg-gradient-to-br from-slate-800 to-slate-900 p-4 rounded-xl flex flex-col items-center justify-center hover:from-blue-900/30 hover:to-cyan-900/30 cursor-pointer transition-all button-press border border-cyan-500/30 hover:border-cyan-400/70 hover:shadow-lg group" style="box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg" alt="Android Logo" class="w-12 h-12 group-hover:brightness-150 transition-all">
+                    <span class="mt-2 font-bold text-cyan-300 group-hover:text-cyan-200">Android</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ===== Boot Screen ===== -->
+        <div id="boot-screen" class="app-screen flex-col justify-center items-center h-full p-8 font-mono text-sm text-cyan-400 bg-black">
+            <div id="boot-log" class="w-full max-w-md text-left" style="text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);">
+                <!-- Boot logs will be injected here -->
+            </div>
+            <div class="mt-4 text-center w-full max-w-md">
+                <div class="w-full bg-slate-800 rounded-full h-2" style="border: 1px solid rgba(0, 212, 255, 0.3); box-shadow: inset 0 0 10px rgba(0, 212, 255, 0.1);"><div id="boot-progress" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full transition-all" style="width: 0%; box-shadow: 0 0 10px rgba(0, 212, 255, 0.6);"></div></div>
+            </div>
+        </div>
+
+        <!-- =================================== -->
+        <!-- ===== DESKTOP (Win/Linux) FLOW ===== -->
+        <!-- =================================== -->
+        <div id="desktop-dashboard-screen" class="app-screen flex-col h-full">
+            <header class="p-4 border-b border-slate-700/50 grid grid-cols-3 items-center flex-shrink-0">
+                <div class="text-left">
+                     <button onclick="resetApp()" class="flex items-center text-slate-300 hover:text-white transition-colors button-press">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m15 18-6-6 6-6"/></svg>
+                        Back
+                    </button>
+                </div>
+                <div class="text-center flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-400 animate-pulse"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+                    <h1 class="text-xl font-bold ml-2 text-cyan-300">DOCWIPING</h1>
+                </div>
+                <div class="text-right">
+                    <button onclick="showScreen('verification-screen')" class="bg-slate-700 hover:bg-slate-600 text-sm font-semibold py-2 px-3 rounded-lg transition-colors button-press mr-2 border border-cyan-500/30 text-cyan-300 hover:border-cyan-400/70">Verify</button>
+                    <button onclick="showSystemInfo()" class="bg-slate-700 hover:bg-slate-600 text-sm font-semibold py-2 px-3 rounded-lg transition-colors button-press border border-cyan-500/30 text-cyan-300 hover:border-cyan-400/70">Info</button>
+                </div>
+            </header>
+            <main class="flex-grow p-6 overflow-y-auto">
+                <h2 class="text-2xl font-bold mb-1 text-center text-cyan-300">Bootable Environment <span id="desktop-os-badge" class="text-lg text-cyan-400"></span></h2>
+                <p class="text-center text-slate-400 mb-6">Detected Storage Devices</p>
+                
+                <!-- System Stats -->
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <div class="bg-slate-800/50 border border-cyan-500/30 rounded-lg p-3 text-center">
+                        <div class="text-cyan-400 text-xs font-semibold">System Status</div>
+                        <div class="text-green-400 font-bold text-sm mt-1">✓ READY</div>
+                    </div>
+                    <div class="bg-slate-800/50 border border-cyan-500/30 rounded-lg p-3 text-center">
+                        <div class="text-cyan-400 text-xs font-semibold">Security Level</div>
+                        <div class="text-cyan-300 font-bold text-sm mt-1">QUANTUM</div>
+                    </div>
+                </div>
+                
+                <div id="desktop-drive-list" class="space-y-4"></div>
+            </main>
+        </div>
+
+        <div id="desktop-wipe-process-screen" class="app-screen flex-col h-full">
+            <header class="p-4 border-b border-slate-700/50 flex justify-between items-center flex-shrink-0">
+                 <button onclick="showScreen('desktop-dashboard-screen')" class="flex items-center text-slate-300 hover:text-white transition-colors button-press">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m15 18-6-6 6-6"/></svg>
+                    Dashboard
+                </button>
+                <h1 id="desktop-wipe-process-title" class="text-xl font-bold"></h1>
+            </header>
+            <div class="p-4 flex justify-center items-center space-x-4 border-b border-slate-800 flex-shrink-0">
+                <div id="desktop-step-1" class="step flex items-center text-blue-400"><div class="w-8 h-8 rounded-full border-2 border-blue-400 flex items-center justify-center font-bold">1</div><span class="ml-2 font-semibold">Analyze</span></div>
+                <div class="w-12 h-px bg-slate-700"></div>
+                <div id="desktop-step-2" class="step flex items-center text-slate-600"><div class="w-8 h-8 rounded-full border-2 border-slate-700 flex items-center justify-center font-bold">2</div><span class="ml-2 font-semibold">Select Method</span></div>
+                <div class="w-12 h-px bg-slate-700"></div>
+                <div id="desktop-step-3" class="step flex items-center text-slate-600"><div class="w-8 h-8 rounded-full border-2 border-slate-700 flex items-center justify-center font-bold">3</div><span class="ml-2 font-semibold">Wipe</span></div>
+            </div>
+            <main class="flex-grow p-6 overflow-y-auto">
+                <div id="desktop-analysis-view" class="w-full">
+                    <h3 class="font-bold text-lg mb-4">Drive Analysis Results</h3>
+                    <div id="analysis-results-container" class="bg-slate-800 p-4 rounded-lg space-y-3">
+                         <div class="flex items-center justify-center h-24">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
+                            <p class="ml-4">Analyzing drive, please wait...</p>
+                        </div>
+                    </div>
+                    <button onclick="showDesktopWipeStep('desktop-method-selection-view')" id="analysis-next-btn" class="mt-8 w-full bg-blue-600 hover:bg-blue-500 transition-colors text-white font-bold py-3 px-4 rounded-lg text-lg opacity-50 cursor-not-allowed glow-shadow" disabled>Next: Select Method</button>
+                </div>
+                <div id="desktop-method-selection-view" class="w-full hidden"><h3 class="font-bold text-lg mb-4">Select Sanitization Standard</h3><div class="space-y-3" id="desktop-method-options"></div><button onclick="showConfirmation()" class="mt-8 w-full bg-blue-600 hover:bg-blue-500 transition-colors text-white font-bold py-3 px-4 rounded-lg text-lg button-press glow-shadow">Next: Final Confirmation</button></div>
+                <div id="desktop-wiping-view" class="w-full hidden text-center">
+                    <h2 class="text-3xl font-bold mb-2 text-cyan-300">Sanitizing...</h2>
+                    <div id="wipe-device-name" class="text-sm text-cyan-400 mb-4 font-semibold">Device: <span id="device-name-display"></span></div>
+                    <div class="w-full bg-slate-700 rounded-full h-4 my-4" style="border: 1px solid rgba(0, 212, 255, 0.3);"><div id="desktop-progress-bar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-4 rounded-full transition-all" style="width: 0%; box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);"></div></div>
+                    <p id="desktop-progress-text" class="text-lg font-semibold mb-4 text-cyan-300">0%</p>
+                    
+                    <!-- Data Meters -->
+                    <div class="space-y-3 mb-6">
+                        <div class="data-meter">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs text-cyan-400 font-semibold">Data Wiped</span>
+                                <span id="wipe-data-percent" class="text-xs text-cyan-300 font-semibold">0 GB / 0 GB</span>
+                            </div>
+                            <div class="data-meter-bar">
+                                <div id="wipe-data-bar" class="data-meter-bar-fill" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="data-meter">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs text-cyan-400 font-semibold">Speed</span>
+                                <span id="wipe-speed" class="text-xs text-cyan-300 font-semibold">0 MB/s</span>
+                            </div>
+                            <div class="data-meter-bar">
+                                <div id="speed-bar" class="data-meter-bar-fill" style="width: 50%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="desktop-log-container" class="w-full h-64 bg-black rounded-lg p-4 font-mono text-xs text-left overflow-y-auto text-cyan-400 flex flex-col-reverse" style="border: 1px solid rgba(0, 212, 255, 0.3); text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);"></div>
+                </div>
+            </main>
+        </div>
+        
+        <!-- ============================ -->
+        <!-- ===== ANDROID FLOW ===== -->
+        <!-- ============================ -->
+        <div id="android-dashboard-screen" class="app-screen flex-col h-full">
+             <header class="p-4 border-b border-slate-700/50 flex justify-between items-center flex-shrink-0">
+                <div class="flex items-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg" alt="Android Logo" class="w-6 h-6">
+                    <h1 class="text-xl font-bold ml-2">CleanWipe for Android</h1>
+                </div>
+                 <button onclick="resetApp()" class="text-slate-400 hover:text-white button-press">&times;</button>
+            </header>
+            <main class="flex-grow p-6 overflow-y-auto">
+                 <h2 class="text-2xl font-bold mb-4">Select Area to Erase</h2>
+                 <div id="android-storage-list" class="space-y-4"></div>
+            </main>
+        </div>
+
+        <div id="android-wiping-screen" class="app-screen flex-col h-full p-6 text-center">
+            <h2 class="text-3xl font-bold mb-2 text-cyan-300">Erasing Data...</h2>
+            <div id="wipe-device-name-android" class="text-sm text-cyan-400 mb-4 font-semibold">Device: <span id="device-name-display-android"></span></div>
+            <p id="android-wiping-info" class="text-slate-400 mb-4"></p>
+            <div class="w-full bg-slate-700 rounded-full h-4 my-4" style="border: 1px solid rgba(0, 212, 255, 0.3);"><div id="android-progress-bar" class="bg-gradient-to-r from-cyan-400 to-blue-400 h-4 rounded-full transition-all duration-500" style="box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);"></div></div>
+            <p id="android-progress-text" class="text-lg font-semibold mb-4 text-cyan-300">0%</p>
+            
+            <!-- Data Meters for Android -->
+            <div class="space-y-3 mb-6">
+                <div class="data-meter">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs text-cyan-400 font-semibold">Data Wiped</span>
+                        <span id="android-wipe-data-percent" class="text-xs text-cyan-300 font-semibold">0 GB / 0 GB</span>
+                    </div>
+                    <div class="data-meter-bar">
+                        <div id="android-wipe-data-bar" class="data-meter-bar-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="android-log-container" class="w-full flex-grow bg-black rounded-lg p-4 font-mono text-xs text-left overflow-y-auto text-cyan-400 flex flex-col-reverse" style="border: 1px solid rgba(0, 212, 255, 0.3); text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);"></div>
+        </div>
+
+
+        <!-- ============================ -->
+        <!-- ===== COMMON SCREENS ===== -->
+        <!-- ============================ -->
+        <div id="success-screen" class="app-screen flex-col justify-center items-center h-full p-8 text-center">
+             <div class="p-4 bg-cyan-500/10 rounded-full animate-pulse" style="animation: neonPulse 3s ease-in-out infinite;">
+                <div class="p-4 bg-cyan-500/20 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                </div>
+            </div>
+            <h2 class="text-3xl font-bold mt-6 text-cyan-300">Sanitization Complete!</h2>
+            <p class="text-slate-400 mt-2 mb-8">The device data has been securely and permanently erased.</p>
+            
+            <!-- Certificate Preview -->
+            <div class="certificate-container w-full max-w-md mb-6">
+                <div class="certificate-header">✓ DOCWIPING</div>
+                <div class="text-left text-sm text-slate-300 space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-cyan-400">Device:</span>
+                        <span id="cert-device" class="font-semibold"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-cyan-400">Status:</span>
+                        <span class="text-green-400 font-semibold">VERIFIED ✓</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-cyan-400">Date:</span>
+                        <span id="cert-date" class="font-semibold"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="generateCertificate()" class="w-full max-w-xs bg-cyan-600 hover:bg-cyan-500 transition-colors text-white font-bold py-4 px-4 rounded-xl text-lg button-press glow-shadow mb-3">Download Certificate PDF</button>
+             <button onclick="resetApp()" class="w-full max-w-xs mt-2 bg-transparent hover:bg-slate-800 transition-colors text-cyan-400 font-bold py-3 px-4 rounded-xl button-press">Finish & Reboot</button>
+        </div>
+
+        <div id="verification-screen" class="app-screen flex-col h-full">
+            <header class="p-4 border-b border-slate-700/50 flex justify-between items-center">
+                <button onclick="selectOS(appState.os || 'Windows')" class="flex items-center text-slate-300 hover:text-white transition-colors button-press">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m15 18-6-6 6-6"/></svg>
+                    Back to Dashboard
+                </button>
+                <h1 class="text-xl font-bold">Certificate Verification</h1>
+            </header>
+            <main class="flex-grow p-8 flex flex-col items-center justify-center text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400 mb-4"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <h2 class="text-2xl font-bold">Verify a Wipe Certificate</h2>
+                <p class="text-slate-400 mt-2 mb-6 max-w-md">Upload the generated PDF certificate to verify its digital signature and confirm its authenticity.</p>
+                <label for="cert-upload" class="w-full max-w-xs bg-blue-600 hover:bg-blue-500 transition-colors text-white font-bold py-4 px-4 rounded-xl text-lg button-press glow-shadow">Upload Certificate</label>
+                <input type="file" id="cert-upload" class="hidden" accept=".pdf" onchange="verifyCertificate(event)">
+                <div id="verification-result" class="mt-8 text-lg w-full max-w-md"></div>
+            </main>
+        </div>
+    </div>
+
+    <!-- ===== Confirmation Modal ===== -->
+    <div id="confirmation-modal" class="absolute inset-0 bg-black/80 backdrop-blur-sm items-center justify-center p-4" style="display: none;">
+        <div class="bg-slate-800 p-8 rounded-2xl text-center max-w-md shadow-2xl border border-slate-700" style="animation: fadeIn 0.3s;">
+             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto text-red-500 mb-4"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>
+            <h2 id="confirm-title" class="text-2xl font-bold mb-2">Final Confirmation</h2>
+            <p id="confirm-text" class="text-slate-400 mb-6"></p>
+            <div class="flex gap-4">
+                <button onclick="document.getElementById('confirmation-modal').style.display = 'none'" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-lg button-press">Cancel</button>
+                <button id="confirm-button" onclick="startWipe()" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg button-press glow-shadow-red">Yes, Erase Data</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== System Info Modal ===== -->
+    <div id="system-info-modal" class="absolute inset-0 bg-black/90 backdrop-blur-sm items-center justify-center p-4" style="display: none;">
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-2xl max-w-md w-full shadow-2xl border-2 border-cyan-500/40" style="animation: neonFadeIn 0.3s; box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);">
+            <h2 class="text-2xl font-bold mb-6 text-cyan-300 text-center" style="text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);">System Information</h2>
+            
+            <div class="space-y-4 text-sm">
+                <div class="bg-slate-800/50 border border-cyan-500/30 rounded-lg p-3">
+                    <div class="text-cyan-400 font-semibold mb-1">Software Version</div>
+                    <div class="text-white">DOCWIPING v2.1 Neon Edition</div>
+                </div>
+                
+                <div class="bg-slate-800/50 border border-cyan-500/30 rounded-lg p-3">
+                    <div class="text-cyan-400 font-semibold mb-1">Operating System</div>
+                    <div class="text-white" id="sys-os">-</div>
+                </div>
+                
+                <div class="bg-slate-800/50 border border-cyan-500/30 rounded-lg p-3">
+                    <div class="text-cyan-400 font-semibold mb-1">Encryption Engine</div>
+                    <div class="text-white">AES-256-GCM Quantum-Safe</div>
+                </div>
+                
+                <div class="bg-slate-800/50 border border-cyan-500/30 rounded-lg p-3">
+                    <div class="text-cyan-400 font-semibold mb-1">Supported Standards</div>
+                    <div class="text-white text-xs">NIST SP 800-88 Rev. 2 | DoD 5220.22-M | ISO 27001</div>
+                </div>
+                
+                <div class="bg-slate-800/50 border border-cyan-500/30 rounded-lg p-3">
+                    <div class="text-cyan-400 font-semibold mb-1">Total Wipes Completed</div>
+                    <div class="text-white">0</div>
+                </div>
+            </div>
+            
+            <button onclick="document.getElementById('system-info-modal').style.display = 'none'" class="mt-6 w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-lg button-press glow-shadow">Close</button>
+        </div>
+    </div>
+
+    <!-- ===== AI Chatbot Widget ===== -->
+    <div id="chatbot-widget" class="fixed bottom-4 right-4 z-50">
+        <!-- Robot Animation Container -->
+        <div id="aurax-robot" class="mb-2 flex justify-end"></div>
+        
+        <button id="aura-robot-launcher" onclick="toggleChat()" class="text-white p-4 shadow-2xl transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            <div class="eye-visor mx-auto mt-2"></div>
+        </button>
+        
+        <div id="aura-chat-window" class="absolute bottom-20 right-0 w-80 sm:w-96 overflow-hidden" style="display: none; max-height: 500px;">
+            <div class="bg-gradient-to-r from-slate-800 to-slate-900 p-4 flex items-center justify-between border-b border-slate-700">
+                <div class="flex items-center">
+                    <div class="w-3 h-3 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                    <h3 class="font-bold text-white">Aura-X — Tactical AI</h3>
+                </div>
+                <button onclick="toggleChat()" class="text-white hover:text-slate-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            
+            <div class="p-3 bg-slate-700/50 flex items-center gap-2">
+                <label class="text-xs text-slate-300">Language:</label>
+                <select id="chat-language" class="bg-slate-600 text-white px-2 py-1 rounded text-xs border border-slate-500">
+                    <option value="en">🇬🇧 English</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="fr">🇫🇷 Français</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                </select>
+            </div>
+            
+            <div id="chat-messages" class="h-80 overflow-y-auto p-4 space-y-3 bg-slate-900/50">
+                <div class="flex items-start gap-2">
+                    <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0 border border-slate-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                    </div>
+                    <div class="bg-slate-800 border-l-4 border-blue-500 rounded p-3 max-w-[75%]">
+                        <p class="text-sm text-white">Systems ready. Aura-X online. I’m your tactical assistant. State objective — I’ll execute. Affirmative.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-3 bg-slate-800 border-t border-slate-700">
+                <div class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Enter command…" class="flex-1 bg-slate-700 text-white px-3 py-2 rounded text-sm border border-slate-600 focus:outline-none focus:border-blue-500" onkeypress="if(event.key==='Enter') sendChatMessage()">
+                    <button onclick="sendChatMessage()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='aurax-robot.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
+
